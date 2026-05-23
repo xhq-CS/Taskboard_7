@@ -32,6 +32,9 @@ public class Task {
     @Column(nullable = false)
     private Boolean completed = false;
 
+    @Column(nullable = false)
+    private Boolean deleted = false;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Priority priority = Priority.MEDIUM;
@@ -56,7 +59,4 @@ public class Task {
     public enum Priority {
         LOW, MEDIUM, HIGH
     }
-
-    @Column(nullable = false)
-    private Boolean deleted = false;
 }

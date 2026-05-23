@@ -48,4 +48,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     // Override findAll to exclude deleted
     @Query("SELECT t FROM Task t WHERE t.deleted = false")
     List<Task> findAllActive();
+
+    Page<Task> findByDeletedFalse(Pageable pageable);
 }

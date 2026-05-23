@@ -37,54 +37,28 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public List<Task> getAllTask() {
-        return taskRepository.findAll();
-
+    public List<Task> getAllTasks() {
+        return taskRepository.findByDeletedFalse();
     }
 
-    public Page<Task> getAllTask(Pageable Pg){
-        return taskRepository.findAll(Pg);
+    public Page<Task> getAllTasks(Pageable pageable) {
+        return taskRepository.findByDeletedFalse(pageable);
     }
 
-    public Task createTask(Task task){
-        if(task.getCompleted() == null){
+    public Task createTask(Task task) {
+        if (task.getCompleted() == null) {
             task.setCompleted(false);
         }
-        if(task.getPriority() == null){
+        if (task.getDeleted() == null) {
+            task.setDeleted(false);
+        }
+        if (task.getPriority() == null) {
             task.setPriority(Task.Priority.MEDIUM);
         }
-
         return taskRepository.save(task);
     }
 
-    public Optional<Task> GetTaskByID(Integer Id ) {
-        return taskRepository.findById(Id);
-
-    }
-
-    public  Optional<Task> updateTask_Optional(Integer id , Task updatedTask) {
-        return taskRepository.findById(id).map(task -> {
-            task.setTitle(updatedTask.getTitle());
-            task.setDescription(updatedTask.getDescription());
-            task.setCompleted(updatedTask.getCompleted());
-            task.setPriority(updatedTask.getPriority());
-            return taskRepository.save(task);
-        });
-
-    }
-
-    public boolean deleteTask(Integer id) {
-        if(taskRepository.existsById(id)){
-            taskRepository.deleteById(id);
-            return true;
-        }
-        return false;
-
-
-    }
-    public List<Task> getAllTasks() {return taskRepository.findByDeletedFalse();}
-
-    public void deleteTask2(Integer id) {
+    public void deleteTask(Integer id) {
         Task task = getTaskById(id);
         task.setDeleted(true);
         taskRepository.save(task);
